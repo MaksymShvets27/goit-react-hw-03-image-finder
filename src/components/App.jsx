@@ -9,7 +9,6 @@ import { Audio } from 'react-loader-spinner';
 import css from './App.module.css';
 
 const ApiKey = '31277754-8952e55c2ce1852b40f45b8fd';
-let test = 1;
 
 class App extends React.Component {
   state = {
@@ -20,7 +19,6 @@ class App extends React.Component {
   };
 
   onSubmit = name => {
-    test = 1;
     this.setState({ seachName: name, articles: [], page: 1, loading: true });
   };
 
@@ -28,8 +26,11 @@ class App extends React.Component {
     this.setState({ page: this.state.page + 1, loading: true });
   };
 
-  async componentDidUpdate() {
-    if (test === this.state.page) {
+  async componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.seachName !== this.state.seachName ||
+      this.state.page > prevState.page
+    ) {
       await axios
         .get(
           `https://pixabay.com/api/?q=${this.state.seachName}&page=${this.state.page}&key=${ApiKey}&image_type=photo&orientation=horizontal&per_page=12`
@@ -38,8 +39,6 @@ class App extends React.Component {
           this.setState({
             articles: [...this.state.articles, ...response.data.hits],
           });
-          test++;
-          this.setState({ loading: true });
         })
         .finally(() => {
           this.setState({ loading: false });
