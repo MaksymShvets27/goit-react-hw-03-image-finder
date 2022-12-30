@@ -4,7 +4,14 @@ import PropTypes from 'prop-types';
 const ImageGalleryItem = ({ id, article }) => {
   return (
     <li key={toString(id)} className={css.ImageGalleryItem}>
-      <img src={article} alt="" loading="lazy" width="100%" height="100%" />
+      <img
+        id={id}
+        src={article}
+        alt=""
+        loading="lazy"
+        width="100%"
+        height="100%"
+      />
     </li>
   );
 };

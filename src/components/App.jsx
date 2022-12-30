@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import Seachbar from './Seachbar/Seachbar';
 import ImageGallery from './ImageGallery/ImageGallery';
@@ -7,8 +6,7 @@ import Button from './Button/Button';
 import { Audio } from 'react-loader-spinner';
 
 import css from './App.module.css';
-
-const ApiKey = '31277754-8952e55c2ce1852b40f45b8fd';
+import fetchImages from './fetchImages';
 
 class App extends React.Component {
   state = {
@@ -31,18 +29,21 @@ class App extends React.Component {
       prevState.seachName !== this.state.seachName ||
       this.state.page > prevState.page
     ) {
-      await axios
-        .get(
-          `https://pixabay.com/api/?q=${this.state.seachName}&page=${this.state.page}&key=${ApiKey}&image_type=photo&orientation=horizontal&per_page=12`
-        )
-        .then(response => {
-          this.setState({
-            articles: [...this.state.articles, ...response.data.hits],
-          });
-        })
-        .finally(() => {
-          this.setState({ loading: false });
-        });
+      let imagesResponce = await fetchImages(
+        this.state.seachName,
+        this.state.page
+      );
+      let imagesFiltred = imagesResponce.data.hits.map(image => {
+        let imageObj = {};
+        imageObj.id = image.id;
+        imageObj.webformatURL = image.webformatURL;
+        imageObj.largeImageURL = image.largeImageURL;
+        return imageObj;
+      });
+      this.setState({
+        articles: [...this.state.articles, ...imagesFiltred],
+        loading: false,
+      });
     }
   }
 
