@@ -6,8 +6,7 @@ import Button from './Button/Button';
 import { Audio } from 'react-loader-spinner';
 
 import css from './App.module.css';
-import fetchImages from './fetchImages';
-
+import fetchImages from 'servise/fetchImages';
 class App extends React.Component {
   state = {
     seachName: '',

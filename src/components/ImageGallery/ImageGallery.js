@@ -33,16 +33,6 @@ class ImageGallery extends React.Component {
     this.setState({ openModal: false });
   };
 
-  keydown = event => {
-    if (event.keyCode === 27) {
-      this.setState({ openModal: false });
-    }
-  };
-
-  componentDidMount() {
-    document.addEventListener('keydown', this.keydown);
-  }
-
   render() {
     return (
       <>
